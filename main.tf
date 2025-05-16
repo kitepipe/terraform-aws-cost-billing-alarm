@@ -7,14 +7,14 @@ locals {
     evaluation_periods  = "1"
     metric_name         = "EstimatedCharges"
     namespace           = "AWS/Billing"
-    period              = "28800"
+    period              = "21600"
     statistic           = "Maximum"
     threshold           = var.monthly_billing_threshold
     alarm_actions       = var.create_sns_topic ? concat([aws_sns_topic.sns_alert_topic[0].arn], var.sns_topic_arns) : var.sns_topic_arns
 
     dimensions = {
       currency       = var.currency
-      linked_account = var.aws_account_id
+      service_name   = "AWSCostExplorer"
     }
   }
 
@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "account_billing_alarm" {
   evaluation_periods  = lookup(local.alarm, "evaluation_periods", "1")
   metric_name         = lookup(local.alarm, "metric_name")
   namespace           = lookup(local.alarm, "namespace", "AWS/Billing")
-  period              = lookup(local.alarm, "period", "28800")
+  period              = lookup(local.alarm, "period", "21600")
   statistic           = lookup(local.alarm, "statistic", "Maximum")
   threshold           = lookup(local.alarm, "threshold")
   alarm_actions       = lookup(local.alarm, "alarm_actions")
@@ -36,7 +36,7 @@ resource "aws_cloudwatch_metric_alarm" "account_billing_alarm" {
 
   dimensions = {
     Currency      = lookup(lookup(local.alarm, "dimensions"), "currency")
-    LinkedAccount = lookup(lookup(local.alarm, "dimensions"), "linked_account", null)
+    ServiceName   = lookup(lookup(local.alarm, "dimensions"), "service_name", null)
   }
 
   tags = var.tags
