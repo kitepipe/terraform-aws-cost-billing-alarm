@@ -14,7 +14,7 @@ locals {
 
     dimensions = {
       currency       = var.currency
-      service_name   = "AWSCostExplorer"
+      # service_name   = "AWSCostExplorer"
     }
   }
 

@@ -26,7 +26,7 @@ variable "aws_account_id" {
 variable "datapoints_to_alarm" {
   description = "The number of datapoints that must be breaching to trigger the alarm."
   type        = number
-  default     = null
+  default     = 1
 }
 
 #=============================#
